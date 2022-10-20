@@ -9,15 +9,14 @@ def read_file(name):
     a = f.read()
     f.close()
     return a
+
 @bot.message_handler(commands=['start']) # команда /start
 def welcome(message):
     markdown = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=3)
     item_today = types.KeyboardButton("Сегодня")
-    markdown.add(item_today)
     item_tomorrow = types.KeyboardButton("Завтра")
-    markdown.add(item_tomorrow)
     item1 = types.KeyboardButton("На неделю")
-    markdown.add(item1)
+    markdown.add(item_today, item_tomorrow, item1)
     bot.send_message(message.chat.id, 'Добро пожаловать!\n',  reply_markup=markdown)
 
 
@@ -37,6 +36,22 @@ def add_message(message):
             item6 = types.InlineKeyboardButton("Суббота", callback_data='day6')
             markup.add(item1, item2, item3, item4, item5, item6)
             bot.send_message(message.chat.id, 'Расписание на неделю', reply_markup=markup)
+
+
+@bot.callback_query_handler(func=lambda call: True)
+def callback_worker(call):
+    if call.data == 'day1':
+        bot.send_message(call.message.chat.id, 'круто' )
+        bot.answer_callback_query(callback_query_id=call.id, show_alert=False, text="Выдано расписание на понедельник ✅")
+    elif call.data == 'day2':
+        bot.send_message(call.message.chat.id, ' ')
+        bot.answer_callback_query(callback_query_id=call.id, show_alert=False, text="Выдано расписание на вторник ✅")
+    elif call.data == 'day3':
+        bot.send_message(call.message.chat.id, ' ')
+        bot.answer_callback_query(callback_query_id=call.id, show_alert=False, text="Выдано расписание на среду ✅")
+    elif call.data == 'day4':
+        bot.send_message(call.message.chat.id, ' ')
+        bot.answer_callback_query(callback_query_id=call.id, show_alert=False, text="Выдано расписание на четверг ✅")
 
 
 
