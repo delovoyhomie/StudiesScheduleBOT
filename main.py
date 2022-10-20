@@ -27,6 +27,16 @@ def add_message(message):
     if message.chat.type == 'private':
         if message.text == 'Сегодня':
             bot.send_message(message.chat.id, read_file('11А Понедельник.txt'))
+        elif message.text == 'На неделю':
+            markup = types.InlineKeyboardMarkup(row_width=3)
+            item1 = types.InlineKeyboardButton("Понедельник", callback_data='day1')
+            item2 = types.InlineKeyboardButton("Вторник", callback_data='day2')
+            item3 = types.InlineKeyboardButton("Среда", callback_data='day3')
+            item4 = types.InlineKeyboardButton("Четверг", callback_data='day4')
+            item5 = types.InlineKeyboardButton("Пятница", callback_data='day5')
+            item6 = types.InlineKeyboardButton("Суббота", callback_data='day6')
+            markup.add(item1, item2, item3, item4, item5, item6)
+            bot.send_message(message.chat.id, 'Расписание на неделю', reply_markup=markup)
 
 
 
