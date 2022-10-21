@@ -43,7 +43,6 @@ def welcome(message):
     markup.add(item1, item2, item3, item4)
     bot.send_message(id, 'Выбери свою букву', reply_markup=markup)
 
-
 @bot.message_handler(content_types = ['text'])
 def add_message(message):
     if message.chat.type == 'private':
@@ -83,39 +82,33 @@ def callback_worker(call):
         class_number = 7
     elif call.data == 'class8':
         print(id)
-
         class_number = 8
     elif call.data == 'class9':
         print(id)
-
         class_number = 9
     elif call.data == 'class10':
         print(id)
-
         class_number = 10
     elif call.data == 'class11':
         print(id)
-
         class_number = 11
 
-
     elif call.data == 'classA':
-
         class_letter = 'A'
         write_the_class_id(str(id), str(class_number), class_letter)
+        bot.send_message(call.message.chat.id, 'Вы успешно зарегистрировались ✅')
     elif call.data == 'classB':
-
         class_letter = 'Б'
         write_the_class_id(str(id), str(class_number), class_letter)
+        bot.send_message(call.message.chat.id, 'Вы успешно зарегистрировались ✅')
     elif call.data == 'classV':
-
         class_letter = 'В'
         write_the_class_id(str(id), str(class_number), class_letter)
+        bot.send_message(call.message.chat.id, 'Вы успешно зарегистрировались ✅')
     elif call.data == 'classG':
-
         class_letter = 'Г'
         write_the_class_id(str(id), str(class_number), class_letter)
-
+        bot.send_message(call.message.chat.id, 'Вы успешно зарегистрировались ✅')
 
 
 bot.polling(none_stop=True)
