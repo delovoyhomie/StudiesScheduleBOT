@@ -144,20 +144,8 @@ def add_message(message):
 def callback_worker(call):
     global class_number
     global class_letter
-    if call.data == 'day1':
-        bot.send_message(call.message.chat.id, 'круто' )
-        bot.answer_callback_query(callback_query_id=call.id, show_alert=False, text="Выдано расписание на понедельник ✅")
-    elif call.data == 'day2':
-        bot.send_message(call.message.chat.id, ' ')
-        bot.answer_callback_query(callback_query_id=call.id, show_alert=False, text="Выдано расписание на вторник ✅")
-    elif call.data == 'day3':
-        bot.send_message(call.message.chat.id, ' ')
-        bot.answer_callback_query(callback_query_id=call.id, show_alert=False, text="Выдано расписание на среду ✅")
-    elif call.data == 'day4':
-        bot.send_message(call.message.chat.id, ' ')
-        bot.answer_callback_query(callback_query_id=call.id, show_alert=False, text="Выдано расписание на четверг ✅")
 
-    elif call.data == 'class7':
+    if call.data == 'class7':
         print(id)
         class_number = 7
     elif call.data == 'class8':
@@ -192,11 +180,11 @@ def callback_worker(call):
 
     elif call.data == 'all':
         send(0) # понедельник
-        #send(1)# вторник
-        #send(2)# среда
-        #send(3)# четверг
-        #send(4)# пятница
-        #send(5)# суббота
+        send(1)# вторник
+        send(2)# среда
+        send(3)# четверг
+        send(4)# пятница
+        send(5)# суббота
     elif call.data == 'day1': send(0)
     elif call.data == 'day2': send(1)
     elif call.data == 'day3': send(2)
