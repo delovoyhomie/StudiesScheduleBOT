@@ -2,13 +2,13 @@ import telebot
 from token_bot import token
 from telebot import types
 bot = telebot.TeleBot(token)
+import datetime
 
-
-
-def print_file(number, letter):
+def print_file(number, letter, len):
     global b_print
     b_print = letter
-    f = open('Расписание/' + str(number) + letter + '.txt', 'r', encoding="utf-8")
+    print('len:', len)
+    f = open('Расписание/' + str(number) + letter + ' ' + len + '.txt', 'r', encoding="utf-8")
     a = f.read()
     f.close()
     return a
@@ -18,7 +18,7 @@ def write_the_class_id(id, number, letter):
     f.write(id + ' ' + number + letter)
     f.close()
 
-def check(id):
+def check(id, len):
     for number in range(7, 11+1):
         f = open('Классы/' + str(number) + '.txt', 'r', encoding="utf-8")
         mass = f.readlines()
@@ -26,19 +26,21 @@ def check(id):
         for i in mass:
             if i == id + ' ' + str(number) + 'A' or i == id + ' ' + str(number) + 'A' + '\n':
                 print('good')
-                print_file(number, 'А')
+                print_file(str(number), 'А', len)
             elif i == id + ' ' + str(number) + 'B' or i == id + ' ' + str(number) + 'B' + '\n':
                 print('good')
-                print_file(number, 'Б')
+                print_file(str(number), 'Б', len)
             elif i == id + ' ' + str(number) + 'V' or i == id + ' ' + str(number) + 'V' + '\n':
                 print('good')
-                print_file(number, 'В')
+                print_file(str(number), 'В', len)
             elif i == id + ' ' + str(number) + 'G' or i == id + ' ' + str(number) + 'G' + '\n':
                 print('good')
-                print_file(str(number), 'Г')
+                print_file(str(number), 'Г', len)
         f.close()
     global a_print
     a_print = number
+    global c_print
+    c_print = len
 @bot.message_handler(commands=['start']) # команда /start
 def welcome(message):
     markdown = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=3)
@@ -73,8 +75,20 @@ def add_message(message):
     if message.chat.type == 'private':
         if message.text == 'Сегодня':
             print('сегодня')
-            check(id)
-            bot.send_message(message.chat.id, print_file(a_print, b_print))
+            da = datetime.datetime.today().weekday()
+            def day_week(d):
+                if da == 0:
+                    d = 'пн'
+                elif da == 1:
+                    d = 'вт'
+                elif da == 4:
+                    d = 'пт'
+                return d
+            global d
+            d = day_week(da)
+            print(d)
+            check(id, d)
+            bot.send_message(message.chat.id, print_file(a_print, b_print, c_print))
         elif message.text == 'На неделю':
             markup = types.InlineKeyboardMarkup(row_width=3)
             item1 = types.InlineKeyboardButton("Понедельник", callback_data='day1')
