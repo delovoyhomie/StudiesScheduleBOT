@@ -59,33 +59,49 @@ def print_file(number, letter, len):
     return a
 
 def write_the_class_id(id, number, letter):
-    f = open('Классы/' + number + '.txt', 'w', encoding="utf-8")
-    f.write(id + ' ' + number + letter)
+    f = open('Классы/' + 'Регистрация' + '.txt', 'a', encoding="utf-8")
+    f.write(id + ' ' + number + letter + '\n')
     f.close()
 
+
 def check(id, len):
-    for number in range(7, 11+1):
-        f = open('Классы/' + str(number) + '.txt', 'r', encoding="utf-8")
-        mass = f.readlines()
-        print(mass)
-        for i in mass:
-            if i == id + ' ' + str(number) + 'A' or i == id + ' ' + str(number) + 'A' + '\n':
-                print('good')
-                print_file(str(number), 'А', len)
-            elif i == id + ' ' + str(number) + 'B' or i == id + ' ' + str(number) + 'B' + '\n':
-                print('good')
-                print_file(str(number), 'Б', len)
-            elif i == id + ' ' + str(number) + 'V' or i == id + ' ' + str(number) + 'V' + '\n':
-                print('good')
-                print_file(str(number), 'В', len)
-            elif i == id + ' ' + str(number) + 'G' or i == id + ' ' + str(number) + 'G' + '\n':
-                print('good')
-                print_file(str(number), 'Г', len)
-        f.close()
     global a_print
-    a_print = number
     global c_print
-    c_print = len
+    f = open('Классы/' + 'Регистрация' + '.txt', 'r', encoding="utf-8")
+    mass = f.readlines()
+    mass.reverse()
+    print(mass)
+    number = mass[0][10:-2]
+    for i in mass:
+        if i == id + ' ' + str(number) + 'A' or i == id + ' ' + str(number) + 'A' + '\n':
+            print('number:', str(number), 'A')
+            print_file(str(number), 'А', len)
+            f.close()
+            a_print = number
+            c_print = len
+            return 0
+
+        elif i == id + ' ' + str(number) + 'B' or i == id + ' ' + str(number) + 'B' + '\n':
+            print('good')
+            print_file(str(number), 'Б', len)
+            f.close()
+            a_print = number
+            c_print = len
+            return 0
+        elif i == id + ' ' + str(number) + 'V' or i == id + ' ' + str(number) + 'V' + '\n':
+            print('good')
+            print_file(str(number), 'В', len)
+            f.close()
+            a_print = number
+            c_print = len
+            return 0
+        elif i == id + ' ' + str(number) + 'G' or i == id + ' ' + str(number) + 'G' + '\n':
+            print('good')
+            print_file(str(number), 'Г', len)
+            f.close()
+            a_print = number
+            c_print = len
+            return 0
 @bot.message_handler(commands=['start']) # команда /start
 def welcome(message):
     markdown = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=3)
