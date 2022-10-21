@@ -4,6 +4,51 @@ from telebot import types
 bot = telebot.TeleBot(token)
 import datetime
 
+def send(da):
+    def day_week(d):
+        if da == 0:
+            d = 'пн'
+        elif da == 1:
+            d = 'вт'
+        elif da == 2:
+            d = 'ср'
+        elif da == 3:
+            d = 'чт'
+        elif da == 4:
+            d = 'пт'
+        elif da == 5:
+            d = 'сб'
+        return d
+
+    global d
+    d = day_week(da)
+    print(d)
+    check(id, d)
+    bot.send_message(id_int, print_file(a_print, b_print, c_print))
+def send_day(time):
+    da = datetime.datetime.today().weekday()
+    da+=time
+    def day_week(d):
+        if da == 0:
+            d = 'пн'
+        elif da == 1:
+            d = 'вт'
+        elif da == 2:
+            d = 'ср'
+        elif da == 3:
+            d = 'чт'
+        elif da == 4:
+            d = 'пт'
+        elif da == 5:
+            d = 'сб'
+        return d
+
+    global d
+    d = day_week(da)
+    print(d)
+    check(id, d)
+    bot.send_message(id_int, print_file(a_print, b_print, c_print))
+
 def print_file(number, letter, len):
     global b_print
     b_print = letter
@@ -61,6 +106,8 @@ def welcome(message):
     global id
     id = str(message.chat.id)
     print('id:', message.chat.id)
+    global id_int
+    id_int = message.chat.id
 
     markup = types.InlineKeyboardMarkup(row_width=2)
     item1 = types.InlineKeyboardButton("А", callback_data='classA')
@@ -75,28 +122,20 @@ def add_message(message):
     if message.chat.type == 'private':
         if message.text == 'Сегодня':
             print('сегодня')
-            da = datetime.datetime.today().weekday()
-            def day_week(d):
-                if da == 0:
-                    d = 'пн'
-                elif da == 1:
-                    d = 'вт'
-                elif da == 4:
-                    d = 'пт'
-                return d
-            global d
-            d = day_week(da)
-            print(d)
-            check(id, d)
-            bot.send_message(message.chat.id, print_file(a_print, b_print, c_print))
+            send_day(0) # + 0 дней, потому что сегодня
+        elif message.text == 'Завтра':
+            print('завтра')
+            send_day(1) # + 1 день, потому что завтра
         elif message.text == 'На неделю':
             markup = types.InlineKeyboardMarkup(row_width=3)
+            item = types.InlineKeyboardButton("На всю неделю", callback_data='all')
             item1 = types.InlineKeyboardButton("Понедельник", callback_data='day1')
             item2 = types.InlineKeyboardButton("Вторник", callback_data='day2')
             item3 = types.InlineKeyboardButton("Среда", callback_data='day3')
             item4 = types.InlineKeyboardButton("Четверг", callback_data='day4')
             item5 = types.InlineKeyboardButton("Пятница", callback_data='day5')
             item6 = types.InlineKeyboardButton("Суббота", callback_data='day6')
+            markup.add(item)
             markup.add(item1, item2, item3, item4, item5, item6)
             bot.send_message(message.chat.id, 'Расписание на неделю', reply_markup=markup)
 
@@ -150,6 +189,20 @@ def callback_worker(call):
         class_letter = 'Г'
         write_the_class_id(str(id), str(class_number), class_letter)
         bot.send_message(call.message.chat.id, 'Вы успешно зарегистрировались ✅')
+
+    elif call.data == 'all':
+        send(0) # понедельник
+        #send(1)# вторник
+        #send(2)# среда
+        #send(3)# четверг
+        #send(4)# пятница
+        #send(5)# суббота
+    elif call.data == 'day1': send(0)
+    elif call.data == 'day2': send(1)
+    elif call.data == 'day3': send(2)
+    elif call.data == 'day4': send(3)
+    elif call.data == 'day5': send(4)
+    elif call.data == 'day6': send(5)
 
 
 bot.polling(none_stop=True)
